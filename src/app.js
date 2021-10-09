@@ -59,7 +59,8 @@ app.get('/weather', (req, res) => {
     if(!req.query.address){
         return res.send("Error:Plese provide an Address");
     }
-    geocode(req.query.address,(error,{longitude,latitude,placeName})=>{
+    //={} means the object is set empty object.{longitude,latitude,placename}={} 
+    geocode(req.query.address,(error,{longitude,latitude,placeName}={})=>{
         if(error){
             return res.send({error});
         }
