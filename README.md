@@ -1,2 +1,2 @@
 # webserver
-A simple webserver buit using node and Express js
+A simple webserver built using node and ExpressJs.
