@@ -2,6 +2,9 @@
 const path      = require('path')
 const express   = require('express')
 const hbs       = require('hbs'); //1. partial configuration
+const weather   = require('./utils/geocode');
+const geocode = weather.geoCode;
+const forcast  = weather.forcast;
 
 const app = express()
 
@@ -39,14 +42,52 @@ app.get('/help', (req, res) => {
     name: 'Keerthana Prakash'
     });
 });
+// app.get('/weather', (req, res) => {
+//     res.render('weather',{
+//         title : 'Weather',
+//         forecast: 'It is snowing',
+//         location: 'Philadelphia',
+//         name: 'Keerthana Prakash'
+//     });
+// });
+
+/*return the forcast details of  location. api is connecteed to the weatherstack api
+and return the wether details back. 
+http://localhost:3000/weather?address=alappuzha
+ */
 app.get('/weather', (req, res) => {
-    res.render('weather',{
-        title : 'Weather',
-        forecast: 'It is snowing',
-        location: 'Philadelphia',
-        name: 'Keerthana Prakash'
-    });
+    if(!req.query.address){
+        return res.send("Error:Plese provide an Address");
+    }
+    geocode(req.query.address,(error,{longitude,latitude,placeName})=>{
+        if(error){
+            return res.send({error});
+        }
+        forcast(latitude,longitude,(error,forcastData)=>{
+            if(error){
+                return res.send({error});
+
+            }
+            res.send({
+                forcast:forcastData,
+                placeName,
+                address : req.query.address
+            });
+            
+
+        })
+
+    })
+
+    // res.render('weather',{
+    //     title : 'Weather',
+    //     forecast: 'It is snowing',
+    //     location: 'Philadelphia',
+    //     address : req.query.address,
+    //     name: 'Keerthana Prakash'
+    // });
 });
+
 //setting the 404 handler. set it the end of all routes.
 
 app.get('/help/*', (req, res) => {
