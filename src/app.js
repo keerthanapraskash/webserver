@@ -7,6 +7,8 @@ const geocode = weather.geoCode;
 const forcast  = weather.forcast;
 
 const app = express()
+const port = process.env.PORT || 3000;// means that it will either take port number
+                                    //from environment or set to 3000
 
 //Define paths to the public directory and the template directory
 const publicDirectoryPath = path.join(__dirname, '../public');
@@ -110,8 +112,8 @@ app.get('*', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-console.log('Server is up on port 3000.')
+app.listen(port,() => {
+console.log('Server is up on port .',port)
 })
 
 
