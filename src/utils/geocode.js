@@ -35,15 +35,18 @@ const forcast = (latitude,longitude,callback)=>{
         }else if(response.body.error){
             callback("Unable to find the location")
         }else{
+            // console.log("response", response)
             const weatherDescriptions = response.body.current.weather_descriptions;
             const locationName = response.body.location.name;
+            const humidity = response.body.current.humidity;
             console.log({
                 weatherDescriptions : weatherDescriptions,
                 locationName : locationName,
+                humidity : humidity,
             })
         const data = response.body;
         //do not use ',' and '+' to concantinate the string at the same time. use only one at a time. otherwise it wont work. 
-        callback(null,data.current.weather_descriptions[0]+". It is currently "+data.current.temperature+" degress out. It feels like "+data.current.feelslike+" degress is out" );
+        callback(null,data.current.weather_descriptions[0]+". It is currently "+data.current.temperature+" degress out. It feels like "+data.current.feelslike+" degress is out and the humidity is" +data.current.humidity+"." );
         }
     });
 };
